@@ -32,7 +32,7 @@ module TuxedoRabbit
   autoload :Pipe,          'tuxedo_rabbit/pipe'
 
 
-  def self.connect(options = {}, config)
+  def self.connect(options = {:enable_http_api_use => false}, config)
 
     @broker = TuxedoRabbit::Broker.new(config)
     @broker.connect(options)
