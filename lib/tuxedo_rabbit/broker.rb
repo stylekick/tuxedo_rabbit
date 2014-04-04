@@ -52,7 +52,7 @@ module TuxedoRabbit
     end
 
     def setup_amqp_connection
-      Hutch.connect({}, @config)
+      Hutch.connect({:enable_http_api_use => false}, @config)
       @hutch_broker = Hutch.broker
     end
 

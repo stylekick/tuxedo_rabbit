@@ -33,7 +33,6 @@ module TuxedoRabbit
 
 
   def self.connect(options = {:enable_http_api_use => false}, config)
-
     @broker = TuxedoRabbit::Broker.new(config)
     @broker.connect(options)
 
