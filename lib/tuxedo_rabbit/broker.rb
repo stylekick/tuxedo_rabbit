@@ -30,7 +30,7 @@ module TuxedoRabbit
     end
 
     def setup_redis_connection
-      @redis = Redis.new()
+      @redis = $redis || Redis.new()
       @buffer = TuxedoRabbit::Buffer.new(@redis)
     end
 
