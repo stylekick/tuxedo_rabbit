@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class Consuming
-  include TuxedoRabbit::Consumer
+  include TuxedoRabbit::Subscriber
 
   consume 'gc.ps.payment.failed'
 
@@ -22,7 +22,7 @@ describe 'consuming', focus: true do
 
 
     class ReplyConsumer
-      include TuxedoRabbit::Consumer
+      include TuxedoRabbit::Subscriber
 
       consume 'gc.ps.payment.reply'
 

@@ -23,7 +23,6 @@ module TuxedoRabbit
         unless @buffer.empty?
           drain_buffer
         end
-        p *args
         @hutch_broker.publish(*args)
       rescue Hutch::PublishError => e
         buffer.publish(*args)

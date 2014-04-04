@@ -1,10 +1,36 @@
-require "tuxedo_rabbit/version"
+require 'hutch'
+
+require 'hutch/message'
+
+
+module Hutch
+  class Message
+
+    def correlation_id
+      @properties[:correlation_id]
+    end
+
+    attr_reader :properties
+
+    def to_s
+      attrs = { :@body => body.to_s, message_id: message_id,
+                timestamp: timestamp, routing_key: routing_key, correlation_id: correlation_id }
+      "#<Message #{attrs.map { |k,v| "#{k}=#{v.inspect}" }.join(', ')}>"
+    end
+
+  end
+end
 
 
 module TuxedoRabbit
   autoload :Broker,        'tuxedo_rabbit/broker'
   autoload :Buffer,        'tuxedo_rabbit/buffer'
-  autoload :Consumer,        'tuxedo_rabbit/consumer'
+  autoload :Subscriber,    'tuxedo_rabbit/subscriber'
+  autoload :Message,       'tuxedo_rabbit/message'
+  autoload :CLI,           'tuxedo_rabbit/cli'
+  autoload :Version,       'tuxedo_rabbit/version'
+  autoload :Pipe,          'tuxedo_rabbit/pipe'
+
 
   def self.connect(options = {}, config)
 
@@ -22,4 +48,16 @@ module TuxedoRabbit
     @broker
   end
 
+
+
+  class Runner
+
+    def initialize
+      @cli = Hutch::CLI.new
+    end
+
+    def run
+      @cli.run
+    end
+  end
 end

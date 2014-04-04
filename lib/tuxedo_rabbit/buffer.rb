@@ -6,10 +6,7 @@ class TuxedoRabbit::Buffer
   end
 
   def publish(routing_key, message, properties = {})
-    p 'publishing to redis'
-    p @redis.llen key
     @redis.rpush key, MultiJson.dump({routing_key: routing_key, message: message, properties: properties})
-    p @redis.llen key
   end
 
 
@@ -22,7 +19,6 @@ class TuxedoRabbit::Buffer
         #@exchange.publish hash.fetch('message'), hash.fetch('options')
     end
     clear_buffer
-    p drained_messages
     drained_messages
   end
 
