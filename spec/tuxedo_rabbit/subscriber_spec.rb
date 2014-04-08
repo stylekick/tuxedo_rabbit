@@ -19,8 +19,6 @@ describe 'consuming', focus: true do
   WORKER = nil
 
   it 'consumes' do
-
-
     class ReplyConsumer
       include TuxedoRabbit::Subscriber
 

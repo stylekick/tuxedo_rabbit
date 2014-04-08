@@ -6,7 +6,6 @@ module TuxedoRabbit
       base.extend(ClassMethods)
       base.class_eval do
         include TuxedoRabbit::Subscriber
-        extend ::ActiveModel::Callbacks
       end
     end
 
