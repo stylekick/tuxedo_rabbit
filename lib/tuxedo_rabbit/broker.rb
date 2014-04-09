@@ -30,8 +30,16 @@ module TuxedoRabbit
     end
 
     def setup_redis_connection
-      @redis = $redis || Redis.new()
+      @redis = $redis || connect_to_redis
       @buffer = TuxedoRabbit::Buffer.new(@redis)
+    end
+
+    def connect_to_redis
+      if ENV['REDIS_URL']
+        Redis.new(:url => ENV['REDIS_URL'])
+      else
+        Redis.new()
+      end
     end
 
     def drain_buffer
@@ -62,6 +70,50 @@ module TuxedoRabbit
 
     def amqp_connected?
       Hutch.connected?
+    end
+  end
+end
+
+
+require 'hutch/broker'
+
+module Hutch
+  class Broker
+    def open_connection!
+      host     = @config[:mq_host]
+      port     = @config[:mq_port]
+      vhost    = @config[:mq_vhost]
+      username = @config[:mq_username]
+      password = @config[:mq_password]
+      tls      = @config[:mq_tls]
+      tls_key  = @config[:mq_tls_cert]
+      tls_cert = @config[:mq_tls_key]
+      protocol = tls ? "amqps://" : "amqp://"
+      sanitized_uri = "#{protocol}#{username}@#{host}:#{port}/#{vhost.sub(/^\//, '')}"
+
+
+
+      if ENV['RABBITMQ_URL']
+        @connection = Bunny.new(ENV['RABBITMQ_URL'])
+        sanitized_uri = ENV['RABBITMQ_URL']
+      else
+        @connection = Bunny.new(host: host, port: port, vhost: vhost,
+                                tls: tls, tls_key: tls_key, tls_cert: tls_cert,
+                                username: username, password: password,
+                                heartbeat: 30, automatically_recover: true,
+                                network_recovery_interval: 1)
+      end
+      logger.info "connecting to rabbitmq (#{sanitized_uri})"
+
+      with_bunny_connection_handler(sanitized_uri) do
+        @connection.start
+      end
+
+      @connection
+    end
+
+    def bindings
+      {}
     end
   end
 end
