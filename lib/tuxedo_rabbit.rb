@@ -1,6 +1,6 @@
 require 'hutch'
-
 require 'hutch/message'
+require_relative 'tuxedo_rabbit/config'
 
 
 module Hutch
