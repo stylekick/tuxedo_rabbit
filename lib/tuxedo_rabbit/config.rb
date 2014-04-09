@@ -1,4 +1,11 @@
 require 'hutch/config'
+
+module TuxedoRabbit
+  module Config
+
+  end
+end
+
 module Hutch
   module Config
     def self.initialize

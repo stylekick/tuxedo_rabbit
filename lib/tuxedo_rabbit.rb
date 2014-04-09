@@ -23,6 +23,7 @@ end
 
 
 module TuxedoRabbit
+  autoload :Config,        'tuxedo_rabbit/config'
   autoload :Broker,        'tuxedo_rabbit/broker'
   autoload :Buffer,        'tuxedo_rabbit/buffer'
   autoload :Subscriber,    'tuxedo_rabbit/subscriber'
@@ -30,6 +31,7 @@ module TuxedoRabbit
   autoload :CLI,           'tuxedo_rabbit/cli'
   autoload :Version,       'tuxedo_rabbit/version'
   autoload :Pipe,          'tuxedo_rabbit/pipe'
+
 
 
   def self.connect(options = {:enable_http_api_use => false}, config)
